@@ -1,4 +1,5 @@
 ﻿using BookStoreAPI.Application.Repositories;
+using BookStoreAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,13 +21,8 @@ namespace BookStoreAPI.API.Controllers
         [HttpGet]
         public async Task Get()
         {
-            await _productWriteRepository.AddRangeAsync(new()
-            {
-                new() { Id = Guid.NewGuid(), Name = "Product 4", Price = 444, Stock = 444,CreatedDate=DateTime.UtcNow},
-                new() { Id = Guid.NewGuid(), Name = "Product 5", Price = 555, Stock = 555,CreatedDate=DateTime.UtcNow},
-                new() { Id = Guid.NewGuid(), Name = "Product 6", Price = 666, Stock = 666,CreatedDate=DateTime.UtcNow},
-
-            });
+            Product product =await _productReadRepository.GetByIdAsync("338719b2-286c-4b52-a82c-05ae76254228",false);
+            product.Name = "Product 7";
             await _productWriteRepository.SaveAsync();
         }
     }
