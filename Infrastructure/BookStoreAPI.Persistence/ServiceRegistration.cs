@@ -1,4 +1,6 @@
-﻿using BookStoreAPI.Persistence.Contexts;
+﻿using BookStoreAPI.Application.Repositories;
+using BookStoreAPI.Persistence.Contexts;
+using BookStoreAPI.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +16,12 @@ namespace BookStoreAPI.Persistence
         public static void AddPersistenceServices(this IServiceCollection services)
         {
             services.AddDbContext<BookStoreAPIDbContext>(options=>options.UseNpgsql(Configuration.ConnectionString));
+            services.AddScoped<ICustomerReadRepository,CustomerReadRepository>();
+            services.AddScoped<ICustomerWriteRepository,CustomerWriteRepository>();
+            services.AddScoped<IOrderReadRepository,OrderReadRepository>();
+            services.AddScoped<IOrderWriteRepository, OrderWriteRepository>();
+            services.AddScoped<IProductReadRepository, ProductReadRepository>();
+            services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
         }
     }
 }
