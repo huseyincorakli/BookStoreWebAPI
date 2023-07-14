@@ -21,9 +21,7 @@ namespace BookStoreAPI.API.Controllers
         [HttpGet]
         public async Task Get()
         {
-            Product product =await _productReadRepository.GetByIdAsync("338719b2-286c-4b52-a82c-05ae76254228",false);
-            product.Name = "Product 7";
-            await _productWriteRepository.SaveAsync();
+         
         }
     }
 }

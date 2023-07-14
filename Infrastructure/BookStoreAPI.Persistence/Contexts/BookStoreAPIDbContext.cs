@@ -1,4 +1,5 @@
 ﻿using BookStoreAPI.Domain.Entities;
+using BookStoreAPI.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,22 @@ namespace BookStoreAPI.Persistence.Contexts
         DbSet<Product>Products { get; set; }
         DbSet<Order> Orders { get; set; }
         DbSet<Customer> Customers { get; set; }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+              var datas=  ChangeTracker.Entries<BaseEntity>();
+            foreach (var item in datas)
+            {
+                if (item.State == EntityState.Added)
+                {
+                    item.Entity.CreatedDate = DateTime.UtcNow;
+                    item.Entity.UpdatedDate = DateTime.UtcNow;
+                }   
+                if(item.State==EntityState.Modified)
+                    item.Entity.UpdatedDate= DateTime.UtcNow;
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
     }
 }
