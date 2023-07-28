@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\BookStoreAPI.Infrastructure\BookStoreAPI.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\BookStoreAPI.Persistence\BookStoreAPI.Persistence.csproj" />
   </ItemGroup>
 

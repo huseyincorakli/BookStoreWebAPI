@@ -22,15 +22,16 @@ namespace BookStoreAPI.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
-            var data = _productReadRepository.GetAll();
+            var data =  _productReadRepository.GetAll(false);
             return Ok(data);
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            Product product = await _productReadRepository.GetByIdAsync(id);
+            Product product = await _productReadRepository.GetByIdAsync(id, false);
             return Ok(product);
         }
         [HttpPost]
