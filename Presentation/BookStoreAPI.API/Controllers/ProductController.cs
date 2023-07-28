@@ -1,4 +1,5 @@
 ﻿using BookStoreAPI.Application.Repositories;
+using BookStoreAPI.Application.RequestParameters;
 using BookStoreAPI.Application.ViewModels.Products;
 using BookStoreAPI.Domain.Entities;
 using BookStoreAPI.Persistence.Repositories;
@@ -22,10 +23,24 @@ namespace BookStoreAPI.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] Pagination pagination)
         {
-            var data =  _productReadRepository.GetAll(false);
-            return Ok(data);
+            int totalData = _productReadRepository.GetAll(false).Count();
+            var data = _productReadRepository.GetAll(false).Select(p => new
+            {
+                p.Id,
+                p.Name,
+                p.Price,
+                p.Stock,
+                p.CreatedDate,
+                p.UpdatedDate
+            }).Skip(pagination.Size*pagination.Page).Take(pagination.Size);
+
+            return Ok(new
+            {
+                totalData,
+                data
+            });
         }
 
         [HttpGet("{id}")]

@@ -6,7 +6,7 @@ using BookStoreAPI.Application.Validators.Products;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-    policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
+    policy.WithOrigins("http://localhost:5856", "https://localhost:5856").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 ));
 
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
