@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\Infrastructure\BookStoreAPI.Persistence\BookStoreAPI.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

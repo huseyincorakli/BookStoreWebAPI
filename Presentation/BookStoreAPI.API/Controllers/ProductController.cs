@@ -1,5 +1,6 @@
 ﻿using BookStoreAPI.Application.Repositories;
 using BookStoreAPI.Application.RequestParameters;
+using BookStoreAPI.Application.Services;
 using BookStoreAPI.Application.ViewModels.Products;
 using BookStoreAPI.Domain.Entities;
 using BookStoreAPI.Persistence.Repositories;
@@ -15,18 +16,20 @@ namespace BookStoreAPI.API.Controllers
     {
         readonly private IProductReadRepository _productReadRepository;
         readonly private IProductWriteRepository _productWriteRepository;
+        readonly private IFileService _fileService;
 
-        public ProductController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository)
+        public ProductController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IFileService fileService)
         {
             _productReadRepository = productReadRepository;
             _productWriteRepository = productWriteRepository;
+            _fileService = fileService;
         }
 
         [HttpGet]
         public IActionResult Get([FromQuery] Pagination pagination)
         {
-            int totalData = _productReadRepository.GetAll(false).Count();
-            var data = _productReadRepository.GetAll(false).Select(p => new
+            int totalCount = _productReadRepository.GetAll(false).Count();
+            var products = _productReadRepository.GetAll(false).Select(p => new
             {
                 p.Id,
                 p.Name,
@@ -38,8 +41,8 @@ namespace BookStoreAPI.API.Controllers
 
             return Ok(new
             {
-                totalData,
-                data
+                totalCount,
+                products
             });
         }
 
@@ -77,6 +80,13 @@ namespace BookStoreAPI.API.Controllers
             await _productWriteRepository.RemoveAsync(id);
             await _productWriteRepository.SaveAsync();
             return StatusCode((int)(HttpStatusCode.OK));
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Upload()
+        {
+            await _fileService.UploadAsync("resource/product-images",Request.Form.Files);
+            return Ok();
         }
     }
 }
